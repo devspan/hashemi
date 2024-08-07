@@ -2,6 +2,11 @@
 
 import React, { useState } from 'react';
 import { useProducts } from '@/app/hooks/useProducts';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function MBPPage() {
   const [filters, setFilters] = useState({
@@ -22,72 +27,91 @@ export default function MBPPage() {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">PFC Made by Pakistan (MBP) Collection</h1>
-      <p className="mb-4">Discover unique fragrances created by talented Pakistani perfumers.</p>
-      
+    <div className="container mx-auto">
+      <h1 className="text-4xl font-bold mb-4">PFC Made by Pakistan (MBP) Collection</h1>
+      <p className="text-lg mb-8">Discover unique fragrances created by talented Pakistani perfumers.</p>
+
       {/* Filters */}
-      <div className="mb-4">
-        <input
+      <div className="mb-8 flex flex-wrap gap-4">
+        <Input
           type="text"
           name="brand"
           placeholder="Filter by brand"
           onChange={handleFilterChange}
-          className="mr-2 p-2 border rounded"
         />
-        <input
+        <Input
           type="number"
           name="minPrice"
           placeholder="Min price"
           onChange={handleFilterChange}
-          className="mr-2 p-2 border rounded"
         />
-        <input
+        <Input
           type="number"
           name="maxPrice"
           placeholder="Max price"
           onChange={handleFilterChange}
-          className="mr-2 p-2 border rounded"
         />
-        <select
-          name="sort"
-          onChange={handleFilterChange}
-          className="mr-2 p-2 border rounded"
-        >
-          <option value="createdAt">Latest</option>
-          <option value="price">Price</option>
-        </select>
-        <select
-          name="order"
-          onChange={handleFilterChange}
-          className="p-2 border rounded"
-        >
-          <option value="desc">Descending</option>
-          <option value="asc">Ascending</option>
-        </select>
+        <Select name="sort" onValueChange={handleFilterChange} defaultValue="createdAt">
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="createdAt">Latest</SelectItem>
+            <SelectItem value="price">Price</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select name="order" onValueChange={handleFilterChange} defaultValue="desc">
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Order" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="desc">Descending</SelectItem>
+            <SelectItem value="asc">Ascending</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Product listing */}
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">Error: {error}</p>}
-      <div className="grid md:grid-cols-3 gap-4">
-        {products.map(product => (
-          <div key={product._id} className="border p-4 rounded">
-            <h2 className="text-xl font-bold">{product.name}</h2>
-            <p>{product.description}</p>
-            <p className="font-bold mt-2">Price: ${product.price.toFixed(2)}</p>
-            <p>Brand: {product.brand}</p>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="grid md:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className="h-5 w-1/3" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-4/5" />
+              </CardContent>
+              <CardFooter>
+                <Skeleton className="h-8 w-1/2" />
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : error ? (
+        <p className="text-red-500">Error: {error}</p>
+      ) : (
+        <div className="grid md:grid-cols-3 gap-4">
+          {products.map(product => (
+            <Card key={product._id}>
+              <CardHeader>
+                <CardTitle>{product.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{product.description}</p>
+                <p className="font-bold mt-2">Price: ${product.price.toFixed(2)}</p>
+                <p>Brand: {product.brand}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {hasMore && (
-        <button
-          onClick={loadMore}
-          className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Load More
-        </button>
+        <div className="mt-8 text-center">
+          <Button onClick={loadMore} variant="secondary">Load More</Button>
+        </div>
       )}
     </div>
   );

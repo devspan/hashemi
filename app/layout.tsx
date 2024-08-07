@@ -1,42 +1,30 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { ThemeProvider } from './components/ThemeProvider';
+import { NavBar } from './components/layout/NavBar';
+import { Footer } from './components/layout/Footer';
 
-const inter = Inter({ subsets: ['latin'] })
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Pakistan Fragrance Community (PFC)',
   description: 'Discover exquisite fragrances from European Niche and Made by Pakistan collections.',
-}
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="bg-gray-800 text-white p-4">
-          <nav className="container mx-auto">
-            <ul className="flex space-x-4">
-              <li><a href="/" className="hover:text-gray-300">Home</a></li>
-              <li><a href="/european-niche" className="hover:text-gray-300">European Niche</a></li>
-              <li><a href="/mbp" className="hover:text-gray-300">Made by Pakistan</a></li>
-              <li><a href="/login" className="hover:text-gray-300">Login</a></li>
-              <li><a href="/signup" className="hover:text-gray-300">Sign Up</a></li>
-            </ul>
-          </nav>
-        </header>
-        <main className="container mx-auto p-4">
-          {children}
-        </main>
-        <footer className="bg-gray-800 text-white p-4 mt-8">
-          <div className="container mx-auto text-center">
-            © 2024 Pakistan Fragrance Community. All rights reserved.
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="min-h-screen flex flex-col">
+            <NavBar />
+            <main className="flex-grow container mx-auto p-4">{children}</main>
+            <Footer />
           </div>
-        </footer>
+        </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
