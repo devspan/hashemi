@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
 
 export default function EuropeanNichePage() {
   const [filters, setFilters] = useState({
@@ -18,10 +19,11 @@ export default function EuropeanNichePage() {
   });
 
   const { products, loading, error, loadMore, hasMore } = useProducts({
-    category: 'European Niche',
+    category: 'European Niche', // or 'European Niche' for the other file
     ...filters,
+    minPrice: filters.minPrice ? parseFloat(filters.minPrice) : undefined,
+    maxPrice: filters.maxPrice ? parseFloat(filters.maxPrice) : undefined,
   });
-
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFilters(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -51,7 +53,7 @@ export default function EuropeanNichePage() {
           placeholder="Max price"
           onChange={handleFilterChange}
         />
-        <Select name="sort" onValueChange={handleFilterChange} defaultValue="createdAt">
+        <Select name="sort" onValueChange={(value) => handleFilterChange({ target: { name: 'sort', value } } as any)} defaultValue="createdAt">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -60,7 +62,7 @@ export default function EuropeanNichePage() {
             <SelectItem value="price">Price</SelectItem>
           </SelectContent>
         </Select>
-        <Select name="order" onValueChange={handleFilterChange} defaultValue="desc">
+        <Select name="order" onValueChange={(value) => handleFilterChange({ target: { name: 'order', value } } as any)} defaultValue="desc">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Order" />
           </SelectTrigger>
@@ -103,6 +105,11 @@ export default function EuropeanNichePage() {
                 <p className="font-bold mt-2">Price: ${product.price.toFixed(2)}</p>
                 <p>Brand: {product.brand}</p>
               </CardContent>
+              <CardFooter>
+                <Link href={`/products/${product._id}`}>
+                  <Button variant="outline">View Details</Button>
+                </Link>
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -110,7 +117,7 @@ export default function EuropeanNichePage() {
 
       {hasMore && (
         <div className="mt-8 text-center">
-          <Button onClick={loadMore}>Load More</Button>
+          <Button onClick={loadMore} variant="secondary">Load More</Button>
         </div>
       )}
     </div>

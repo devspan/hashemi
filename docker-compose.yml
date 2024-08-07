@@ -1,18 +1,22 @@
-version: '3'
+version: '3.8'
+
 services:
-  web:
-    build: .
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=production
-      - MONGODB_URI=mongodb://db:27017/pfc
-    depends_on:
-      - db
-  db:
+  mongodb:
     image: mongo:latest
+    container_name: pfc_mongodb
+    ports:
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example_password
+    networks:
+      - pfc_network
 
 volumes:
   mongodb_data:
+
+networks:
+  pfc_network:
+    driver: bridge

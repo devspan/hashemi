@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
 
 export default function MBPPage() {
   const [filters, setFilters] = useState({
@@ -18,8 +19,10 @@ export default function MBPPage() {
   });
 
   const { products, loading, error, loadMore, hasMore } = useProducts({
-    category: 'MBP',
+    category: 'MBP', // or 'European Niche' for the other file
     ...filters,
+    minPrice: filters.minPrice ? parseFloat(filters.minPrice) : undefined,
+    maxPrice: filters.maxPrice ? parseFloat(filters.maxPrice) : undefined,
   });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -51,7 +54,7 @@ export default function MBPPage() {
           placeholder="Max price"
           onChange={handleFilterChange}
         />
-        <Select name="sort" onValueChange={handleFilterChange} defaultValue="createdAt">
+        <Select name="sort" onValueChange={(value) => handleFilterChange({ target: { name: 'sort', value } } as any)} defaultValue="createdAt">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -60,7 +63,7 @@ export default function MBPPage() {
             <SelectItem value="price">Price</SelectItem>
           </SelectContent>
         </Select>
-        <Select name="order" onValueChange={handleFilterChange} defaultValue="desc">
+        <Select name="order" onValueChange={(value) => handleFilterChange({ target: { name: 'order', value } } as any)} defaultValue="desc">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Order" />
           </SelectTrigger>
@@ -103,6 +106,11 @@ export default function MBPPage() {
                 <p className="font-bold mt-2">Price: ${product.price.toFixed(2)}</p>
                 <p>Brand: {product.brand}</p>
               </CardContent>
+              <CardFooter>
+                <Link href={`/products/${product._id}`}>
+                  <Button variant="outline">View Details</Button>
+                </Link>
+              </CardFooter>
             </Card>
           ))}
         </div>

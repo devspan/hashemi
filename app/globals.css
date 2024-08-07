@@ -4,58 +4,58 @@
 
 @layer base {
   :root {
-    --background: 255 100% 97%;
-    --foreground: 240 64% 27%;
-    --card: 255 100% 97%;
-    --card-foreground: 240 64% 27%;
-    --popover: 255 100% 97%;
-    --popover-foreground: 240 64% 27%;
-    --primary: 359 89% 49%;
+    --background: 220 15% 95%;
+    --foreground: 240 8% 15%;
+    --card: 220 15% 95%;
+    --card-foreground: 240 8% 15%;
+    --popover: 220 15% 95%;
+    --popover-foreground: 240 8% 15%;
+    --primary: 204 70% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 120 100% 39%;
+    --secondary: 322 87% 53%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 180 45% 94%;
-    --muted-foreground: 240 64% 27%;
-    --accent: 60 100% 50%;
+    --muted: 210 16% 82%;
+    --muted-foreground: 240 8% 15%;
+    --accent: 45 100% 51%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 63%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 60% 85%;
-    --input: 240 60% 85%;
-    --ring: 240 64% 27%;
-    --radius: 0.5rem;
-    --chart-1: 359 89% 49%;
-    --chart-2: 120 100% 39%;
-    --chart-3: 60 100% 50%;
-    --chart-4: 270 75% 50%;
-    --chart-5: 30 100% 50%;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 204 70% 53%;
+    --radius: 0.75rem;
+    --chart-1: 204 70% 53%;
+    --chart-2: 322 87% 53%;
+    --chart-3: 45 100% 51%;
+    --chart-4: 167 65% 45%;
+    --chart-5: 29 100% 55%;
   }
 
   .dark {
-    --background: 240 30% 12%;
-    --foreground: 60 100% 97%;
-    --card: 240 30% 12%;
-    --card-foreground: 60 100% 97%;
-    --popover: 240 30% 12%;
-    --popover-foreground: 60 100% 97%;
-    --primary: 120 100% 70%;
-    --primary-foreground: 240 30% 12%;
-    --secondary: 180 100% 30%;
-    --secondary-foreground: 60 100% 97%;
-    --muted: 240 30% 18%;
-    --muted-foreground: 60 100% 85%;
-    --accent: 30 100% 50%;
-    --accent-foreground: 60 100% 97%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 60 100% 97%;
-    --border: 240 30% 18%;
-    --input: 240 30% 18%;
-    --ring: 60 100% 80%;
-    --chart-1: 120 100% 70%;
-    --chart-2: 180 100% 30%;
-    --chart-3: 30 100% 50%;
-    --chart-4: 270 75% 70%;
-    --chart-5: 0 100% 50%;
+    --background: 240 8% 15%;
+    --foreground: 220 15% 95%;
+    --card: 240 8% 15%;
+    --card-foreground: 220 15% 95%;
+    --popover: 240 8% 15%;
+    --popover-foreground: 220 15% 95%;
+    --primary: 204 70% 60%;
+    --primary-foreground: 240 8% 15%;
+    --secondary: 322 87% 60%;
+    --secondary-foreground: 240 8% 15%;
+    --muted: 240 8% 25%;
+    --muted-foreground: 220 15% 95%;
+    --accent: 45 100% 60%;
+    --accent-foreground: 240 8% 15%;
+    --destructive: 0 84% 70%;
+    --destructive-foreground: 240 8% 15%;
+    --border: 240 8% 25%;
+    --input: 240 8% 25%;
+    --ring: 204 70% 60%;
+    --chart-1: 204 70% 60%;
+    --chart-2: 322 87% 60%;
+    --chart-3: 45 100% 60%;
+    --chart-4: 167 65% 55%;
+    --chart-5: 29 100% 65%;
   }
 }
 
@@ -65,5 +65,28 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Additional custom styles for perfume marketplace */
+@layer components {
+  .perfume-card {
+    @apply bg-card text-card-foreground rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300;
+  }
+
+  .perfume-image {
+    @apply rounded-t-lg object-cover w-full h-48;
+  }
+
+  .perfume-title {
+    @apply text-lg font-semibold mt-2 px-4;
+  }
+
+  .perfume-price {
+    @apply text-primary font-bold mt-1 px-4;
+  }
+
+  .cta-button {
+    @apply bg-primary text-primary-foreground font-semibold py-2 px-4 rounded-full hover:bg-primary/90 transition-colors duration-300;
   }
 }

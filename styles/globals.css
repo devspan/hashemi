@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 15% 95%;
+    --foreground: 240 8% 15%;
+    --card: 220 15% 95%;
+    --card-foreground: 240 8% 15%;
+    --popover: 220 15% 95%;
+    --popover-foreground: 240 8% 15%;
+    --primary: 204 70% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 322 87% 53%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 16% 82%;
+    --muted-foreground: 240 8% 15%;
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 63%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 204 70% 53%;
+    --radius: 0.75rem;
+    --chart-1: 204 70% 53%;
+    --chart-2: 322 87% 53%;
+    --chart-3: 45 100% 51%;
+    --chart-4: 167 65% 45%;
+    --chart-5: 29 100% 55%;
+  }
+
+  .dark {
+    --background: 240 8% 15%;
+    --foreground: 220 15% 95%;
+    --card: 240 8% 15%;
+    --card-foreground: 220 15% 95%;
+    --popover: 240 8% 15%;
+    --popover-foreground: 220 15% 95%;
+    --primary: 204 70% 60%;
+    --primary-foreground: 240 8% 15%;
+    --secondary: 322 87% 60%;
+    --secondary-foreground: 240 8% 15%;
+    --muted: 240 8% 25%;
+    --muted-foreground: 220 15% 95%;
+    --accent: 45 100% 60%;
+    --accent-foreground: 240 8% 15%;
+    --destructive: 0 84% 70%;
+    --destructive-foreground: 240 8% 15%;
+    --border: 240 8% 25%;
+    --input: 240 8% 25%;
+    --ring: 204 70% 60%;
+    --chart-1: 204 70% 60%;
+    --chart-2: 322 87% 60%;
+    --chart-3: 45 100% 60%;
+    --chart-4: 167 65% 55%;
+    --chart-5: 29 100% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Additional custom styles for perfume marketplace */
+@layer components {
+  .perfume-card {
+    @apply bg-card text-card-foreground rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300;
+  }
+
+  .perfume-image {
+    @apply rounded-t-lg object-cover w-full h-48;
+  }
+
+  .perfume-title {
+    @apply text-lg font-semibold mt-2 px-4;
+  }
+
+  .perfume-price {
+    @apply text-primary font-bold mt-1 px-4;
+  }
+
+  .cta-button {
+    @apply bg-primary text-primary-foreground font-semibold py-2 px-4 rounded-full hover:bg-primary/90 transition-colors duration-300;
+  }
+}

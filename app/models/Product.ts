@@ -1,33 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/app/lib/db';
-import Product from '@/app/models/Product';
-import { validateToken } from '@/app/utils/auth';
+// File: app/models/Product.ts
 
-export async function POST(req: NextRequest) {
-  try {
-    const user = validateToken(req);
-    if (!user || user.role !== 'seller') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+import mongoose from 'mongoose';
 
-    await dbConnect();
-    const { name, description, price, category, brand, stock } = await req.json();
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  brand: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: { type: String, required: true, enum: ['European Niche', 'Made by Pakistan'] },
+  stock: { type: Number, required: true },
+  fragrance_notes: [{ type: String }],
+  year_released: { type: Number },
+  gender: { type: String, enum: ['Masculine', 'Feminine', 'Unisex'] },
+}, { timestamps: true });
 
-    const newProduct = new Product({
-      name,
-      description,
-      price,
-      category,
-      brand,
-      stock,
-      seller: user.userId,
-    });
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
-    await newProduct.save();
-
-    return NextResponse.json({ message: 'Product created successfully', product: newProduct }, { status: 201 });
-  } catch (error) {
-    console.error('Create product error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
+export default Product;

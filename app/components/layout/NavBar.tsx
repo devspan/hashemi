@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sun, Moon, ShoppingCart, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
 
 export function NavBar() {
   const { setTheme } = useTheme();
@@ -18,8 +19,8 @@ export function NavBar() {
   return (
     <header className="bg-background text-foreground py-4 border-b">
       <nav className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold">
-          Pakistan Fragrance Community
+        <Link href="/">
+          <Image src="/pfc.svg" alt="Pakistan Fragrance Community" width={60} height={60} />
         </Link>
         <ul className="flex space-x-6 items-center">
           <li>
