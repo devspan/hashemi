@@ -70,7 +70,7 @@ export default async function Home() {
             <HoverCardTrigger asChild>
               <Card className="transition-transform hover:scale-105">
                 <CardHeader>
-                  <CardTitle>PFC European Niche</CardTitle>
+                  <CardTitle>PFC</CardTitle>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
                   <p>Explore our collection of high-class European, French, and niche imported perfumes.</p>
@@ -93,7 +93,7 @@ export default async function Home() {
             <HoverCardTrigger asChild>
               <Card className="transition-transform hover:scale-105">
                 <CardHeader>
-                  <CardTitle>PFC Made by Pakistan (MBP)</CardTitle>
+                  <CardTitle>Made in Pakistan</CardTitle>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
                   <p>Discover fragrances crafted by talented Pakistani perfumers and local houses.</p>
