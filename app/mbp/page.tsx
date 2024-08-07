@@ -19,7 +19,7 @@ export default function MBPPage() {
   });
 
   const { products, loading, error, loadMore, hasMore } = useProducts({
-    category: 'MBP', // or 'European Niche' for the other file
+    category: 'Made by Pakistan', // or 'European Niche' for the other file
     ...filters,
     minPrice: filters.minPrice ? parseFloat(filters.minPrice) : undefined,
     maxPrice: filters.maxPrice ? parseFloat(filters.maxPrice) : undefined,
