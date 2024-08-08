@@ -13,7 +13,7 @@ const perfumes = [
     fragrance_notes: ["Pineapple", "Birch", "Musk", "Oakmoss"],
     year_released: 2010,
     gender: "Masculine",
-    imageUrl: "https://demo.pakfrag.com/images/aventus.jpg"
+    imageUrl: "https://demo.pakfrag.com/images/products/niche/aventus.png"
   },
   {
     name: "Baccarat Rouge 540",
@@ -25,7 +25,7 @@ const perfumes = [
     fragrance_notes: ["Saffron", "Jasmine", "Amberwood", "Fir Resin"],
     year_released: 2015,
     gender: "Unisex",
-    imageUrl: "https://demo.pakfrag.com/images/baccarat-rouge-540.jpg"
+    imageUrl: "https://demo.pakfrag.com/images/products/niche/baccarat-rouge-540.png"
   },
   {
     name: "Khas",
@@ -37,7 +37,7 @@ const perfumes = [
     fragrance_notes: ["Sandalwood", "Patchouli", "Vetiver", "Musk"],
     year_released: 2018,
     gender: "Masculine",
-    imageUrl: "https://demo.pakfrag.com/images/khas.jpg"
+    imageUrl: "https://demo.pakfrag.com/images/products/mip/khas.png"
   },
   {
     name: "Noor",
@@ -49,7 +49,7 @@ const perfumes = [
     fragrance_notes: ["Rose", "Jasmine", "Amber", "Vanilla"],
     year_released: 2019,
     gender: "Feminine",
-    imageUrl: "https://demo.pakfrag.com/images/noor.jpg"
+    imageUrl: "https://demo.pakfrag.com/images/products/mip/noor.png"
   }
 ];
 

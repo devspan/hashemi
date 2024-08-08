@@ -1,11 +1,45 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { getFeaturedProducts } from '@/app/lib/db-queries';
 
-export async function FeaturedProducts() {
-  const featuredProducts = await getFeaturedProducts(3);
+interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  imageUrl: string;
+}
+
+export function FeaturedProducts() {
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchFeaturedProducts() {
+      try {
+        const response = await fetch('/api/featured-products');
+        if (!response.ok) {
+          throw new Error('Failed to fetch featured products');
+        }
+        const data = await response.json();
+        setFeaturedProducts(data);
+      } catch (err) {
+        setError('Error loading featured products');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchFeaturedProducts();
+  }, []);
+
+  if (isLoading) return <div>Loading featured products...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <section className="mb-6">
@@ -34,5 +68,3 @@ export async function FeaturedProducts() {
     </section>
   );
 }
-
-export default FeaturedProducts;

@@ -2,6 +2,7 @@ import dbConnect from './db';
 import Product from '@/app/models/Product';
 import { Types, Document } from 'mongoose';
 
+
 interface IProduct extends Document {
   _id: Types.ObjectId;
   name: string;
@@ -35,16 +36,21 @@ function formatProduct(product: IProduct): ProductOutput {
   };
 }
 
-export async function getFeaturedProducts(limit = 3): Promise<ProductOutput[]> {
-  await dbConnect();
+export async function getFeaturedProducts(limit = 3) {
   const products = await Product.find({})
     .sort({ createdAt: -1 })
     .limit(limit)
-    .lean() as IProduct[];
+    .lean();
 
-  return products.map(formatProduct);
+  return products.map(product => ({
+    id: product._id.toString(),
+    name: product.name,
+    brand: product.brand,
+    price: product.price,
+    imageUrl: product.imageUrl || '/placeholder.png',
+    category: product.category
+  }));
 }
-
 export async function getAllProducts(
   category?: string,
   searchTerm?: string,

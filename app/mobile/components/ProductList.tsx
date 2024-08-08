@@ -1,15 +1,50 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
-import { getAllProducts } from '@/app/lib/db-queries';
+
+interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  imageUrl: string;
+}
 
 interface ProductListProps {
   searchTerm?: string;
   page?: number;
 }
 
-export async function ProductList({ searchTerm, page = 1 }: ProductListProps) {
-  const { products, pagination } = await getAllProducts(undefined, searchTerm, page, 10);
+export function ProductList({ searchTerm, page = 1 }: ProductListProps) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await fetch(`/api/products?search=${searchTerm || ''}&page=${page}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data.products);
+      } catch (err) {
+        setError('Error loading products');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, [searchTerm, page]);
+
+  if (isLoading) return <div>Loading products...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="grid grid-cols-2 gap-4 px-4">
@@ -37,5 +72,3 @@ export async function ProductList({ searchTerm, page = 1 }: ProductListProps) {
     </div>
   );
 }
-
-export default ProductList;

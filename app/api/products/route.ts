@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     const order = (searchParams.get('order') || 'desc') as SortOrder;
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
+    const search = searchParams.get('search') || '';
 
     const query: any = {};
 
@@ -26,6 +27,12 @@ export async function GET(req: NextRequest) {
       query.price = {};
       if (minPrice) query.price.$gte = parseFloat(minPrice);
       if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    }
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
     }
 
     const totalProducts = await Product.countDocuments(query);
@@ -46,18 +53,16 @@ export async function GET(req: NextRequest) {
       totalProducts,
     });
   } catch (error) {
-    console.error('Fetch products error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Error fetching products:', error);
+    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
   }
 }
-
-// ... rest of the file remains the same
 
 export async function POST(req: NextRequest) {
   try {
     const user = validateToken(req);
     if (!user || user.role !== 'seller') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'You are not authorized to create products' }, { status: 403 });
     }
 
     await dbConnect();
@@ -72,8 +77,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Product created successfully', product: newProduct }, { status: 201 });
   } catch (error) {
-    console.error('Create product error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Error creating product:', error);
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
 }
 
@@ -81,26 +86,26 @@ export async function PUT(req: NextRequest) {
   try {
     const user = validateToken(req);
     if (!user || user.role !== 'seller') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'You are not authorized to update products' }, { status: 403 });
     }
 
     await dbConnect();
     const { id, ...updateData } = await req.json();
 
-    const product = await Product.findOneAndUpdate(
+    const updatedProduct = await Product.findOneAndUpdate(
       { _id: id, seller: user.userId },
       updateData,
       { new: true }
     );
 
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found or you\'re not authorized to update it' }, { status: 404 });
+    if (!updatedProduct) {
+      return NextResponse.json({ error: 'Product not found or you are not authorized to update it' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Product updated successfully', product });
+    return NextResponse.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
-    console.error('Update product error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
   }
 }
 
@@ -108,21 +113,21 @@ export async function DELETE(req: NextRequest) {
   try {
     const user = validateToken(req);
     if (!user || user.role !== 'seller') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'You are not authorized to delete products' }, { status: 403 });
     }
 
     await dbConnect();
     const { id } = await req.json();
 
-    const product = await Product.findOneAndDelete({ _id: id, seller: user.userId });
+    const deletedProduct = await Product.findOneAndDelete({ _id: id, seller: user.userId });
 
-    if (!product) {
-      return NextResponse.json({ error: 'Product not found or you\'re not authorized to delete it' }, { status: 404 });
+    if (!deletedProduct) {
+      return NextResponse.json({ error: 'Product not found or you are not authorized to delete it' }, { status: 404 });
     }
 
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {
-    console.error('Delete product error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Error deleting product:', error);
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
   }
 }

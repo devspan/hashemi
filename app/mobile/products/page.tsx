@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SearchBar } from '../components/SearchBar';
-import ProductList from '../components/ProductList';
+import { ProductList } from '../components/ProductList';
 
 export const metadata = {
   title: 'PFC Mobile - Products',

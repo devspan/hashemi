@@ -1,6 +1,6 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import { Schema, model, models, Model } from 'mongoose';
 
-export interface IProduct extends Document {
+export interface IProduct {
   name: string;
   brand: string;
   description: string;
@@ -10,7 +10,7 @@ export interface IProduct extends Document {
   fragrance_notes: string[];
   year_released: number;
   gender: 'Masculine' | 'Feminine' | 'Unisex';
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 const productSchema = new Schema<IProduct>({
@@ -23,16 +23,9 @@ const productSchema = new Schema<IProduct>({
   fragrance_notes: { type: [String], required: true },
   year_released: { type: Number, required: true },
   gender: { type: String, enum: ['Masculine', 'Feminine', 'Unisex'], required: true },
-  imageUrl: { type: String }
+  imageUrl: { type: String, required: true }
 }, { timestamps: true });
 
-// Check if the model already exists to prevent re-compilation errors
-let Product: Model<IProduct>;
-
-if (mongoose.models.Product) {
-  Product = mongoose.models.Product as Model<IProduct>;
-} else {
-  Product = mongoose.model<IProduct>('Product', productSchema);
-}
+const Product: Model<IProduct> = models.Product || model<IProduct>('Product', productSchema);
 
 export default Product;

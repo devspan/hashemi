@@ -5,12 +5,12 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const FeaturedProducts = dynamic(() => import('./FeaturedProducts'), {
+const FeaturedProducts = dynamic<any>(() => import('./FeaturedProducts').then((mod) => mod.FeaturedProducts), {
   loading: () => <Skeleton className="h-48 w-full" />,
   ssr: true
 });
 
-const ProductList = dynamic(() => import('./ProductList'), {
+const ProductList = dynamic<any>(() => import('./ProductList').then((mod) => mod.ProductList), {
   loading: () => <ProductListSkeleton />,
   ssr: true
 });
@@ -25,7 +25,15 @@ function ProductListSkeleton() {
   );
 }
 
-export function MobileHomeWrapper({ initialSearchTerm = '' }) {
+type ProductListProps = {
+  searchTerm: string;
+};
+
+type MobileHomeWrapperProps = {
+  initialSearchTerm?: string;
+};
+
+export function MobileHomeWrapper({ initialSearchTerm = '' }: MobileHomeWrapperProps) {
   return (
     <div className="space-y-4">
       <SearchBar />
@@ -35,7 +43,7 @@ export function MobileHomeWrapper({ initialSearchTerm = '' }) {
         ) : (
           <>
             <FeaturedProducts />
-            <ProductList />
+            <ProductList searchTerm="" />
           </>
         )}
       </Suspense>
