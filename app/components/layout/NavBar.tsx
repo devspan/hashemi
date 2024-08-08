@@ -18,7 +18,7 @@ export async function NavBar() {
   const user = await getUser();
 
   return (
-    <header className="bg-background text-foreground py-4 border-b">
+    <header className="bg-background text-foreground py-4 border-b hidden md:block">
       <nav className="container mx-auto px-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image src="/pfc.svg" alt="Pakistan Fragrance Community" width={60} height={60} />

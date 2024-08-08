@@ -1,11 +1,8 @@
-// File: app/api/init-demo-data/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/db';
 import Product from '@/app/models/Product';
 
 const perfumes = [
-  // European Niche Perfumes
   {
     name: "Aventus",
     brand: "Creed",
@@ -15,7 +12,8 @@ const perfumes = [
     stock: 50,
     fragrance_notes: ["Pineapple", "Birch", "Musk", "Oakmoss"],
     year_released: 2010,
-    gender: "Masculine"
+    gender: "Masculine",
+    imageUrl: "https://demo.pakfrag.com/images/aventus.jpg"
   },
   {
     name: "Baccarat Rouge 540",
@@ -26,9 +24,9 @@ const perfumes = [
     stock: 40,
     fragrance_notes: ["Saffron", "Jasmine", "Amberwood", "Fir Resin"],
     year_released: 2015,
-    gender: "Unisex"
+    gender: "Unisex",
+    imageUrl: "https://demo.pakfrag.com/images/baccarat-rouge-540.jpg"
   },
-  // Made by Pakistan (MBP) Perfumes
   {
     name: "Khas",
     brand: "Junaid Jamshed",
@@ -38,7 +36,8 @@ const perfumes = [
     stock: 100,
     fragrance_notes: ["Sandalwood", "Patchouli", "Vetiver", "Musk"],
     year_released: 2018,
-    gender: "Masculine"
+    gender: "Masculine",
+    imageUrl: "https://demo.pakfrag.com/images/khas.jpg"
   },
   {
     name: "Noor",
@@ -49,7 +48,8 @@ const perfumes = [
     stock: 80,
     fragrance_notes: ["Rose", "Jasmine", "Amber", "Vanilla"],
     year_released: 2019,
-    gender: "Feminine"
+    gender: "Feminine",
+    imageUrl: "https://demo.pakfrag.com/images/noor.jpg"
   }
 ];
 

@@ -2,13 +2,14 @@
 
 import mongoose from 'mongoose';
 
+// Ensure MONGODB_URI is defined
 if (!process.env.MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
 const MONGODB_URI: string = process.env.MONGODB_URI;
 
-let cached = global.mongoose;
+let cached: { conn: mongoose.Mongoose | null; promise: Promise<mongoose.Mongoose> | null } = global.mongoose;
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
