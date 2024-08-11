@@ -2,31 +2,34 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Search, ShoppingBag, User } from 'lucide-react';
+import { Home, ShoppingBag, User, Heart, Menu } from 'lucide-react';
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: '/mobile', icon: Home, label: 'Home' },
-  { href: '/mobile/products', icon: Search, label: 'Products' },
+  { href: '/mobile/favorites', icon: Heart, label: 'Favorites' },
   { href: '/mobile/cart', icon: ShoppingBag, label: 'Cart' },
   { href: '/mobile/profile', icon: User, label: 'Profile' },
+  { href: '/mobile/menu', icon: Menu, label: 'More' },
 ];
 
 export function BottomNavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50">
-      <ul className="flex justify-around items-center h-16">
+    <nav className="bottom-nav">
+      <ul className="flex justify-around items-center h-16 max-w-screen-xl mx-auto">
         {navItems.map((item) => (
           <li key={item.href}>
             <Link 
               href={item.href}
-              className={`flex flex-col items-center justify-center p-2 ${
-                pathname === item.href ? 'text-primary' : 'text-muted-foreground'
-              }`}
+              className={cn(
+                "bottom-nav-item",
+                pathname === item.href && "bottom-nav-item-active"
+              )}
             >
-              <item.icon className="w-6 h-6" />
-              <span className="text-xs mt-1">{item.label}</span>
+              <item.icon className="bottom-nav-icon" />
+              <span className="bottom-nav-label">{item.label}</span>
             </Link>
           </li>
         ))}

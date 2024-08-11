@@ -6,89 +6,103 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ShoppingCart, User } from 'lucide-react';
+import { User, Menu } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import { LoginLink, RegisterLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ThemeToggle } from './ThemeToggle';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { CartButton } from './CartButton';
 
 export async function NavBar() {
   const { isAuthenticated, getUser } = getKindeServerSession();
   const user = await getUser();
 
   return (
-    <header className="bg-background text-foreground py-4 border-b hidden md:block">
-      <nav className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
-          <Image src="/pfc.svg" alt="Pakistan Fragrance Community" width={60} height={60} />
-        </Link>
-        <ul className="flex space-x-6 items-center">
-          <li>
-            <Link href="/european-niche" className="text-lg hover:text-primary">
+    <header className="bg-background text-foreground py-4 border-b">
+      <nav className="container mx-auto px-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center">
+            <Image src="/pfc.svg" alt="Pakistan Fragrance Community" width={60} height={60} priority />
+          </Link>
+          <div className="hidden md:flex space-x-6 items-center">
+            <Link href="/european-niche" className="text-lg hover:text-primary transition-colors">
               European Niche
             </Link>
-          </li>
-          <li>
-            <Link href="/mbp" className="text-lg hover:text-primary">
+            <Link href="/mbp" className="text-lg hover:text-primary transition-colors">
               Made by Pakistan
             </Link>
-          </li>
-          <li>
-            <Link href="/cart">
-              <Button variant="ghost">
-                <ShoppingCart className="w-5 h-5" />
-                <span className="sr-only">Cart</span>
-              </Button>
-            </Link>
-          </li>
-          {await isAuthenticated() ? (
-            <li>
+          </div>
+          <div className="flex items-center space-x-4">
+            <CartButton />
+            {await isAuthenticated() ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="w-10 rounded-full p-0">
+                  <Button variant="ghost" className="w-10 h-10 rounded-full p-0">
                     <Avatar>
-                      <AvatarImage src={user?.picture ?? ''} alt="Avatar" />
+                      <AvatarImage src={user?.picture ?? ''} alt={user?.given_name ?? 'User avatar'} />
                       <AvatarFallback>
                         <User className="w-4 h-4" />
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
                     <Link href="/profile">Profile</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href="/orders">Orders</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href="/settings">Settings</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <LogoutLink>Log out</LogoutLink>
+                  <DropdownMenuItem asChild>
+                    <LogoutLink className="w-full">Log out</LogoutLink>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </li>
-          ) : (
-            <>
-              <li>
+            ) : (
+              <>
                 <LoginLink>
-                  <Button variant="secondary">Login</Button>
+                  <Button variant="ghost">Login</Button>
                 </LoginLink>
-              </li>
-              <li>
                 <RegisterLink>
-                  <Button variant="default">Sign Up</Button>
+                  <Button>Sign Up</Button>
                 </RegisterLink>
-              </li>
-            </>
-          )}
-          <li>
+              </>
+            )}
             <ThemeToggle />
-          </li>
-        </ul>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="w-5 h-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <nav className="flex flex-col space-y-4">
+                  <Link href="/european-niche">European Niche</Link>
+                  <Link href="/mbp">Made by Pakistan</Link>
+                  {await isAuthenticated() ? (
+                    <>
+                      <Link href="/profile">Profile</Link>
+                      <Link href="/orders">Orders</Link>
+                      <Link href="/settings">Settings</Link>
+                      <LogoutLink>Log out</LogoutLink>
+                    </>
+                  ) : (
+                    <>
+                      <LoginLink>Login</LoginLink>
+                      <RegisterLink>Sign Up</RegisterLink>
+                    </>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
       </nav>
     </header>
   );

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getProductById } from '@/lib/product';
+import { AddToCartButton } from '@/app/components/AddToCartButton';
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const product = await getProductById(params.id);
@@ -27,9 +28,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           <p className="mb-4">{product.description}</p>
           <p className="mb-4">Brand: {product.brand}</p>
           <p className="mb-4">Category: {product.category}</p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Add to Cart
-          </button>
+          <AddToCartButton product={product} />
         </div>
       </div>
     </div>

@@ -4,9 +4,9 @@ import './globals.css';
 import { ThemeProvider } from './components/ThemeProvider';
 import { NavBar } from './components/layout/NavBar';
 import { Footer } from './components/layout/Footer';
+import { CartProvider } from './contexts/CartContext';
 
-
-const inter = Roboto({
+const roboto = Roboto({
   subsets: ['latin'],
   weight: '400'
 });
@@ -16,16 +16,29 @@ export const metadata: Metadata = {
   description: 'Discover exquisite fragrances from European Niche and Made by Pakistan collections.',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="min-h-screen flex flex-col">
-            <NavBar />
-            <main className="flex-grow container mx-auto p-4">{children}</main>
-            <Footer />
-          </div>
+      <body className={roboto.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CartProvider>
+            <div className="flex flex-col min-h-screen">
+              <NavBar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>
